@@ -81,7 +81,7 @@ async def test_insertar_cliente():
 async def test_actualizar_cliente():
     id_cliente = 1
     cliente_data = clienteClass(
-        nombre='Johny3',
+        nombre='Johny30',
         apellido='Doew2',
         cedula='123333789',
         edad=30,
