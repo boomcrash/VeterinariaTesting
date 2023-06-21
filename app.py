@@ -1,6 +1,7 @@
 
 #importando controladores
 from controladores.clienteController import cliente_router
+from controladores.propietarioController import propietario_router
 #libreria que se importa de configuracion.py (contiene las configuraciones del server)
 from configuracion import configuracion
 #inicializar flask con fastApi
@@ -35,6 +36,13 @@ app.include_router(
     prefix='/api/v1/cliente',
     tags=['cliente'],
     responses={404: {'description': 'Error de acceso a la ventana de entregas'}},
+)
+
+app.include_router(
+    propietario_router,
+    prefix='/api/v1/propietario',
+    tags=['propietario'],
+    responses={404: {'description': 'Error de acceso a la ventana de propietarios'}},
 )
 
 #app.include_router(user_router, prefix="/api/v1")
