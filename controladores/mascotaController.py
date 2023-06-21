@@ -14,7 +14,7 @@ mascota_router = APIRouter()
 from fastapi import HTTPException
 
 @mascota_router.get("/getMascota")
-async def getMascota():
+async def getMascotas():
     conn = await conexion.getConexion()
     try:
         mascotas = []
