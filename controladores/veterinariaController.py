@@ -34,8 +34,28 @@ async def getVeterinaria():
         conn.close()
 
 
+@veterinaria_router.get("/getVeterinaria/{idVeterinaria}")
+async def getVeterinariaById(idVeterinaria: int):
+    conn = await conexion.getConexion()
+    try:
+        async with conn.cursor() as cur:
+            await cur.execute("SELECT * FROM veterinaria WHERE idVeterinaria = %s", (idVeterinaria,))
+            result = await cur.fetchone()
+            if result is not None:
+                veterinaria = {'idVeterinaria': result['idVeterinaria'], 'nombre': result['nombre'], 'direccion': result['direcciono'], 'ruc': result['ruc'], 'telefono': result['telefono'], 'descripcion': result['descripcion']}
+                return {'data': veterinaria, 'accion': True}
+            else:
+                raise HTTPException(status_code=404, detail="Not Found")
+    except HTTPException:
+        raise  # Re-raise the HTTPException
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="")
+    finally:
+        conn.close()
+
+
 @veterinaria_router.post("/insertarVeterinaria")
-async def insertarCliente(veterinaria:veterinariaClass):
+async def insertarveterinaria(veterinaria:veterinariaClass):
     conn = await conexion.getConexion()
     try:
         async with conn.cursor() as cur:
@@ -43,6 +63,26 @@ async def insertarCliente(veterinaria:veterinariaClass):
                               (veterinaria.nombre, veterinaria.direccion, veterinaria.ruc, veterinaria.telefono, veterinaria.descripcion))
             await conn.commit()
         return {'mensaje': 'Veterinaria insertado correctamente', 'accion': True}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="")
+    finally:
+        conn.close()
+
+    
+@veterinaria_router.put("/actualizarVeterinaria/{idVeterinaria}")
+async def actualizarVeterinaria(idVeterinaria: int, veterinaria: veterinariaClass):
+    conn = await conexion.getConexion()
+    try:
+        async with conn.cursor() as cur:
+            await cur.execute("UPDATE veterinaria SET nombre = %s, direccion = %s, ruc = %s, telefono = %s, descripcion = %s WHERE idVeterinaria = %s",
+                              (veterinaria.nombre, veterinaria.direccion, veterinaria.ruc, veterinaria.telefono, veterinaria.descripcion, idVeterinaria))
+            if cur.rowcount > 0:
+                await conn.commit()
+                return {'mensaje': 'Veterinaria actualizado correctamente', 'accion': True}
+            else:
+                raise HTTPException(status_code=404, detail="Not Found")
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail="")
     finally:
