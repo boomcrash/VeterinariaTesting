@@ -78,9 +78,31 @@ async def getpropietariosByCelular(celular: str):
     finally:
         conn.close()
 
+@propietario_router.get("/getpropietariosByProfesion")
+async def getpropietariosByProfesion(profesion: str):
+    conn = await conexion.getConexion()
+    try:
+        propietarios = []
+        async with conn.cursor() as cur:
+            await cur.execute("SELECT * FROM propietario WHERE profesion ='" + profesion +"'")
+            result = await cur.fetchall()
+            for data in result:
+                propietario = {'idPropietario': data['idPropietario'], 'nombre': data['nombre'], 'apellido': data['apellido'], 'celular': data['celular'], 'profesion': data['profesion'], 'edad': data['edad']}
+                propietarios.append(propietario)
+        if len(propietarios) > 0:
+            return {'data': propietarios, 'accion': True}
+        else:
+            raise HTTPException(status_code=404, detail="Not Found")
+    except HTTPException:
+        raise  # Re-raise the HTTPException
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="")
+    finally:
+        conn.close()
 
-@propietario_router.post("/insertarpropietario")
-async def insertarpropietario(propietario:propietarioClass):
+
+@propietario_router.post("/insertarPropietario")
+async def insertarPropietario(propietario:propietarioClass):
     conn = await conexion.getConexion()
     try:
         async with conn.cursor() as cur:
@@ -94,8 +116,8 @@ async def insertarpropietario(propietario:propietarioClass):
         conn.close()
 
 
-@propietario_router.put("/actualizarpropietario/{idPropietario}")
-async def actualizarpropietario(idPropietario: int, propietario: propietarioClass):
+@propietario_router.put("/actualizarPropietario/{idPropietario}")
+async def actualizarPropietario(idPropietario: int, propietario: propietarioClass):
     conn = await conexion.getConexion()
     try:
         async with conn.cursor() as cur:
