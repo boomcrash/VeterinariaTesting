@@ -42,7 +42,7 @@ async def getVeterinariaById(idVeterinaria: int):
             await cur.execute("SELECT * FROM veterinaria WHERE idVeterinaria = %s", (idVeterinaria,))
             result = await cur.fetchone()
             if result is not None:
-                veterinaria = {'idVeterinaria': result['idVeterinaria'], 'nombre': result['nombre'], 'direccion': result['direcciono'], 'ruc': result['ruc'], 'telefono': result['telefono'], 'descripcion': result['descripcion']}
+                veterinaria = {'idVeterinaria': result['idVeterinaria'], 'nombre': result['nombre'], 'direccion': result['direccion'], 'ruc': result['ruc'], 'telefono': result['telefono'], 'descripcion': result['descripcion']}
                 return {'data': veterinaria, 'accion': True}
             else:
                 raise HTTPException(status_code=404, detail="Not Found")
