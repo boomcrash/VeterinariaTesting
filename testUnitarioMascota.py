@@ -4,7 +4,6 @@ from clases.mascotaClass import mascotaClass
 from controladores.mascotaController import (
     getMascotas,
     getMascotasByTipoAnimal,
-    getMascotasById,
     insertarMascota,
     actualizarMascota
 )
@@ -40,21 +39,14 @@ async def test_get_mascotas_by_tipoAnimal():
 
 
 @pytest.mark.asyncio
-async def test_get_mascotas_by_id():
-    response = await getMascotasById(1)
-    assert response['accion'] is True
-
-
-
-@pytest.mark.asyncio
 async def test_insertar_mascota():
     mascota_data = mascotaClass(
-        nombre='Chipi',
-        edad=4,
-        raza='Siames',
-        colorPelaje='Blanco',
-        colorOjos='Azul',
-        tipoAnimal='Gato'
+        nombre='Mascota Prueba',
+        edad=2,
+        raza='Mascota Prueba',
+        colorPelaje='Mascota Prueba',
+        colorOjos='Mascota Prueba',
+        tipoAnimal='Mascota Prueba'
     )
     response = await insertarMascota(mascota_data)
     assert response['accion'] is True
@@ -64,7 +56,7 @@ async def test_insertar_mascota():
 async def test_actualizar_mascota():
     id_mascota = 1
     mascota_data = mascotaClass(
-        nombre='Maximiliam',
+        nombre='Max',
         edad=3,
         raza='Labrador Retriever',
         colorPelaje='Dorado',

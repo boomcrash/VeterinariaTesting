@@ -34,28 +34,6 @@ async def getMascotas():
         conn.close()
 
 
-
-@mascota_router.get("/getMascotas/{idMascota}")
-async def getMascotasById(idMascota: int):
-    conn = await conexion.getConexion()
-    try:
-        async with conn.cursor() as cur:
-            await cur.execute("SELECT * FROM mascota WHERE idMascota = %s", (idMascota,))
-            result = await cur.fetchone()
-            if result is not None:
-                mascota = {'idMascota': result['idMascota'], 'nombre': result['nombre'], 'edad': result['edad'], 'raza': result['raza'], 'colorPelaje': result['colorPelaje'], 'colorOjos': result['colorOjos'], 'tipoAnimal': result['tipoAnimal']}
-                return {'data': mascota, 'accion': True}
-            else:
-                raise HTTPException(status_code=404, detail="Not Found")
-    except HTTPException:
-        raise  # Re-raise the HTTPException
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="")
-    finally:
-        conn.close()
-
-
-
 @mascota_router.get("/getMascotasByTipoAnimal")
 async def getMascotasByTipoAnimal(tipoAnimal: str):
     conn = await conexion.getConexion()
