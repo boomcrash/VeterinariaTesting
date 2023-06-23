@@ -3,6 +3,7 @@
 from controladores.clienteController import cliente_router
 from controladores.veterinariaController import veterinaria_router
 from controladores.propietarioController import propietario_router
+from controladores.mascotaController import mascota_router
 #libreria que se importa de configuracion.py (contiene las configuraciones del server)
 from configuracion import configuracion
 #inicializar flask con fastApi
@@ -52,6 +53,14 @@ app.include_router(
     prefix='/api/v1/propietario',
     tags=['propietario'],
     responses={404: {'description': 'Error de acceso a la ventana de propietarios'}},
+)
+
+#mascota_router
+app.include_router(
+    mascota_router,
+    prefix='/api/v1/mascota',
+    tags=['mascota'],
+    responses={404: {'description': 'Error de acceso a la ventana de mascota'}},
 )
 
 #app.include_router(user_router, prefix="/api/v1")
