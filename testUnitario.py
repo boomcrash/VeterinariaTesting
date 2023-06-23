@@ -9,7 +9,6 @@ from controladores.clienteController import (
     insertarCliente,
     actualizarCliente
 )
-
 # Pruebas unitarias para validar error 404
 
 @pytest.mark.asyncio
